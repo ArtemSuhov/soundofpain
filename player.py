@@ -40,7 +40,8 @@ class Player:
             self.pos = self._nframes
             self.pause()
         while not self._pause:
-            self.player.write(self._data[self.pos * self._frame_size:(self.pos + 1) * self._frame_size])
+            self.player.write(self._data[self.pos * self._frame_size:(
+                                        self.pos + 1) * self._frame_size])
             self.pos += 1
 
     def back(self, time=1):

@@ -69,23 +69,27 @@ class Project:
 
     def reverse(self, path):
         song = AudioSegment.from_file(path)
-        song.reverse().export(path[:len(path) - 4] + "_reverse.wav", format="wav")
+        song.reverse().export(path[:len(path) - 4] + "_reverse.wav",
+                              format="wav")
         return "_reverse.wav is ready"
 
     def change_speed(self, path, coefficient):
         song = AudioSegment.from_file(path)
-        effects.speedup(song, coefficient).export(path[:len(path) - 4] + "_speedup.wav", format="wav")
+        effects.speedup(song, coefficient).export(
+            path[:len(path) - 4] + "_speedup.wav", format="wav")
         return "_speedup.wav is ready"
 
     def add_to_line(self, begin_index, end_index, begin_in_project=None):
-        if (begin_index >= end_index or begin_index >= len(self.current_track.trackpoints) or
+        if (begin_index >= end_index or begin_index >= len(
+                self.current_track.trackpoints) or
                 end_index >= len(self.current_track.trackpoints)):
             return False
 
         if not begin_in_project:
             begin_in_project = 0
 
-        fragment = Track_in_line(self.current_track, begin_in_project, begin_index, end_index)
+        fragment = Track_in_line(self.current_track, begin_in_project,
+                                 begin_index, end_index)
         if fragment not in self.fragments:
             self.fragments.append(fragment)
 
@@ -101,11 +105,13 @@ class Project:
         return None
 
     def compile_fragment(self, start, end):
-        result = [0 for i in range(int((end - start) * self.rate * self.channels))]
+        result = [0 for i in
+                  range(int((end - start) * self.rate * self.channels))]
         for fragment in self.fragments:
             if fragment.start < end and fragment.end > start:
                 data = fragment.get_data(start - fragment.start,
-                                         min(end, fragment.end) - max(fragment.start, start))
+                                         min(end, fragment.end) - max(
+                                             fragment.start, start))
                 index = max(0, fragment.start - start)
                 for i in helpers.bytes_to_numbers(data, self.sampwidth):
                     result[index] += int(i)

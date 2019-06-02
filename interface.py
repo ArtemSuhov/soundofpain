@@ -14,7 +14,7 @@ def interface(project, player):
             if int(x) == float(x):
                 return int(x)
             return float(x)
-        except:
+        except("Oops"):
             return x
 
     commands = {
